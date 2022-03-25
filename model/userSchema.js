@@ -20,6 +20,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    contactedProperty:[
+        {
+            property:{
+                type: String,
+                required: true
+            }
+        }
+    ]
+    ,
     tokens:[
         {
             token:{

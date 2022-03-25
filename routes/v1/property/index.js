@@ -5,5 +5,6 @@ module.exports=()=>{
     routes.post('/create',require('./createProperty')());
     routes.post('/remove',require('./removeProperty')());
     routes.post('/update',require('./updateProperty')());
+    routes.post('/contact',require('./contactProperty')());
     return routes
 }

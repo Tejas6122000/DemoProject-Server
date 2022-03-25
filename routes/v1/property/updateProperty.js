@@ -7,13 +7,14 @@ module.exports=()=>{
 
     return async(req,res)=>{
         const {id,name,location}=req.body;
-        let sellerId
-        try{
-            const token=req.headers?.cookie.split("=")[1]
-            sellerId = (jwt.verify(token, process.env.SECRET_KEY)._id);
-        }catch(error){
+        let token = req.cookies.jwt;
+        let sellerId;
+        if(!token){
             return res.status(401).send("Unauthorized Access!");
+        }else{
+            sellerId = (await userService.getUser(token))._id;
         }
+       
 
         if(!id || !name || !location){
             res.json({ error: 'Please fill all the fields' });
