@@ -47,25 +47,8 @@ const login = async(email,password)=>{
     }
 }
 
-const getUser = async(id)=>{
-    try{
-        const user = await User.findOne({_id:id});
-        if(user){
-            return user
-        }
-        else{
-            return "No User Found"
-        }
-    }catch(error){
-        return error
-    }
-}
-
-
-
 
 module.exports = {
     register,
-    login,
-    getUser
+    login
 }

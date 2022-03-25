@@ -17,7 +17,7 @@ const propertySchema = new mongoose.Schema({
         required: true
     },
     buyerId : {
-        type: Number,
+        type: String,
         required: false
     }
 });

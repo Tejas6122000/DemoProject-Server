@@ -26,6 +26,49 @@ const createProperty= async(name,location,sellerId)=>{
             if (result){
                 return "Success"
             }
+            else{
+                return result
+            }
+        }
+    } catch (error) {
+        return error
+    }
+}
+
+const updateProperty= async(id,name,location,sellerId)=>{
+    try {
+        const Exists = await Property.findOne({_id:id});
+        if(Exists){
+            const result = await Property.updateOne({_id:id},{$set:{name:name,location:location,sellerId:sellerId}})
+            if (result){
+                return "Success";
+            }
+            else{
+                return result
+            }
+        }else{
+            return "Property Doesnot Exist"
+        }
+    } catch (error) {
+        return error
+    }
+}
+
+const removeProperty= async(id)=>{
+    try {
+
+        const Exists = await Property.findOne({_id:id});
+        if(Exists){
+            const result=await Property.remove({_id:id})
+            if(result){
+                return "Success"
+            }
+            else{
+                return result
+            }
+        }
+        else{
+            return "Property Doesnot Exist"
         }
     } catch (error) {
         return error
@@ -38,5 +81,7 @@ const createProperty= async(name,location,sellerId)=>{
 
 module.exports = {
     allProperties,
-    createProperty
+    createProperty,
+    removeProperty,
+    updateProperty
 }
