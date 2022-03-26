@@ -60,6 +60,10 @@ userSchema.methods.generateAuthToken = async function(){
 
 userSchema.methods.addToContacted = async function(property_id){
     try {
+        let result = this.contactedProperty.filter(x=> x.property==property_id)
+        if(result.length>0){
+            return "Propert added to contacted list"
+        }
         this.contactedProperty = this.contactedProperty.concat({property:property_id});
         await this.save();
         return "Propert added to contacted list"

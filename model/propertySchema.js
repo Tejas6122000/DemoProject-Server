@@ -28,7 +28,10 @@ const propertySchema = new mongoose.Schema({
 
 propertySchema.methods.addContacterId = async function(contacterId){
     try {
-        
+        let result = this.contacterIds.filter(x=> x.contacterId==contacterId)
+        if(result.length>0){
+            return "Saved"
+        }
         this.contacterIds = this.contacterIds.concat({contacterId:contacterId});
         await this.save();
         return "Saved"
