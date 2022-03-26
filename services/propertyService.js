@@ -1,6 +1,10 @@
 require('../db/conn');
 const Property = require('../model/propertySchema');
 
+const jwt = require('jsonwebtoken');
+const User = require('../model/userSchema');
+require('dotenv').config();
+
 
 const allProperties= async()=>{
     try {
@@ -75,7 +79,26 @@ const removeProperty= async(id)=>{
     }
 }
 
+const contactedProperty= async(property_id,user_id)=>{
 
+    try {
+        const property = await Property.findOne({_id:property_id})
+        const user = await User.findOne({_id:user_id});
+        if(property.sellerId!=user._id){
+            const message = await property.addContacterId(user_id);
+            const message2 = await user.addToContacted(property_id);
+            return {user:user,property:property}
+        }
+        else{
+            return "You cannot contact your own property"
+        }
+
+
+    } catch (error) {
+        return error
+    }
+
+}
 
 
 
@@ -83,5 +106,6 @@ module.exports = {
     allProperties,
     createProperty,
     removeProperty,
-    updateProperty
+    updateProperty,
+    contactedProperty
 }

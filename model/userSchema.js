@@ -57,5 +57,18 @@ userSchema.methods.generateAuthToken = async function(){
     }
 }
 
+
+userSchema.methods.addToContacted = async function(property_id){
+    try {
+        this.contactedProperty = this.contactedProperty.concat({property:property_id});
+        await this.save();
+        return "Propert added to contacted list"
+
+    } catch (error) {
+        return error
+        
+    }
+}
+
 const User = mongoose.model('USER', userSchema);
 module.exports = User;

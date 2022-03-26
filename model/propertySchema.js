@@ -16,11 +16,28 @@ const propertySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    buyerId : {
-        type: String,
-        required: false
-    }
+    contacterIds : [
+        {
+            contacterId:{
+                type: String,
+                required: true 
+            }
+        }
+    ]
 });
+
+propertySchema.methods.addContacterId = async function(contacterId){
+    try {
+        
+        this.contacterIds = this.contacterIds.concat({contacterId:contacterId});
+        await this.save();
+        return "Saved"
+
+    } catch (error) {
+        return error
+    }
+
+}
 
 const Property = mongoose.model('PROPERTY', propertySchema);
 module.exports = Property;
