@@ -1,6 +1,6 @@
 const propertyService = require('../../../services/propertyService');
 const userService = require('../../../services/userService');
-const jwt = require('jsonwebtoken');
+
 
 
 module.exports=()=>{

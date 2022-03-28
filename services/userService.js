@@ -2,7 +2,7 @@ require('../db/conn');
 const User = require('../model/userSchema');
 bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
+
 
 
 
