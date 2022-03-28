@@ -86,7 +86,7 @@ const contactedProperty= async(property_id,user_id)=>{
         const property = await Property.findOne({_id:property_id})
         const user = await User.findOne({_id:user_id});
         if(property.sellerId!=user._id){
-            const message = await property.addContacterId(user_id);
+            const message = await property.addContacterId(user.id);
             const message2 = await user.addToContacted(property_id);
             return property.sellerId;
         }

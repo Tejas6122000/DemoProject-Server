@@ -15,11 +15,12 @@ module.exports=()=>{
                 res.status(500).json({ error: 'Something Went Wrong' });
             }
             else{
+                const user = await userService.getUser(message);
                 res.cookie('jwt', message,{
                     expires: new Date(Date.now()+86,400,000),
                     httpOnly:true
                 });
-                res.status(200).json({user:message,message:"Logged In Successfully!"});
+                res.status(200).json({user:user,message:"Logged In Successfully!"});
             }
         }
     }

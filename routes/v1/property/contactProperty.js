@@ -20,7 +20,6 @@ module.exports=()=>{
         }
         else{
             const user=await userService.getUserById(message);
-            console.log(user)
             if(user=="Failed"){
                 res.json({message:"This Listing Doesnot Exist"});
             }

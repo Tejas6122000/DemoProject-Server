@@ -33,7 +33,7 @@ const login = async(email,password)=>{
             const isMatch = await bcrypt.compare(password, userLogin.password);
             if(isMatch){
                 const token = await userLogin.generateAuthToken();
-                return {_id:userLogin._id, name:userLogin.name, email:userLogin.email, phone:userLogin.phone, contactedProperty: userLogin.contactedProperty};
+                return token;
 
             }else{
                 return "Wrong Credentials"
@@ -53,7 +53,7 @@ const getUser = async(token)=>{
         const verifyUser = jwt.verify(token, process.env.SECRET_KEY);
         if(verifyUser){
             const user  =await User.findOne({_id:verifyUser._id})
-            return user
+            return {_id:user._id,name:user.name,email:user.email,phone:user.phone,contactedProperty:user.contactedProperty};
         }else{
             return "Failed"
         }
