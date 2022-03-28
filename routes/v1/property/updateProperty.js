@@ -6,29 +6,29 @@ const jwt = require('jsonwebtoken');
 module.exports=()=>{
 
     return async(req,res)=>{
-        const {id,name,location}=req.body;
+        const {id,name,location,area,price,type,description,sellerId}=req.body;
         let token = req.cookies.jwt;
-        let sellerId;
-        if(!token){
-            return res.status(401).send("Unauthorized Access!");
+        let canEdit;
+        if(!id || !name || !location || !area || !description || !price || !type || !sellerId){
+            res.json({ error: 'Please provide all the details' });
         }else{
-            sellerId = (await userService.getUser(token))._id;
-        }
-       
-
-        if(!id || !name || !location){
-            res.json({ error: 'Please fill all the fields' });
-        }else{
-            const message = await propertyService.updateProperty(id,name,location,sellerId);
-            if(message=="Property Doesnot Exist"){
-                res.status(200).json({ message: "Property Doesnot Exist!" });
-            }else if(message=="Success"){
-                res.status(200).json({ message: "Property Updated Successfully!" });
+            if(!token){
+                return res.status(401).send("Unauthorized Access!");
             }else{
-                res.status(500).json({ message: "Something Went Wrong!" });
+                canEdit = (await userService.getUser(token))._id;
+                if(canEdit!=sellerId){
+                    return res.status(401).send("You cannot edit this property!");
+                }else{        
+                    const message = await propertyService.updateProperty(id,name,location,area,price,type,description,sellerId);
+                    if(message=="Property Doesnot Exist"){
+                        res.status(200).json({ message: "Property Doesnot Exist!" });
+                    }else if(message=="Success"){
+                        res.status(200).json({ message: "Property Updated Successfully!" });
+                    }else{
+                        res.status(500).json({ message: "Something Went Wrong!" });
+                    }
+                }
             }
         }
     }
-
-
 }

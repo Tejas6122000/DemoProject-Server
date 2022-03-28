@@ -19,13 +19,13 @@ const allProperties= async()=>{
     }
 }
 
-const createProperty= async(name,location,sellerId)=>{
+const createProperty= async(name,location,area,price,type,description,sellerId)=>{
     try {
-        const Exists = await Property.findOne({name:name});
+        const Exists = await Property.findOne({name:name,location:location});
         if(Exists){
-            return "Exists"
+                return "Exists"
         }else{
-            const property = new Property({name,location,sellerId});
+            const property = new Property({name,location,area,price,type,description,sellerId});
             const result = await property.save();
             if (result){
                 return "Success"
@@ -39,11 +39,11 @@ const createProperty= async(name,location,sellerId)=>{
     }
 }
 
-const updateProperty= async(id,name,location,sellerId)=>{
+const updateProperty= async(id,name,location,area,price,type,description,sellerId)=>{
     try {
         const Exists = await Property.findOne({_id:id});
         if(Exists){
-            const result = await Property.updateOne({_id:id},{$set:{name:name,location:location,sellerId:sellerId}})
+            const result = await Property.updateOne({_id:id},{$set:{name:name,location:location,area:area,price:price,type:type,description:description,sellerId:sellerId}})
             if (result){
                 return "Success";
             }
@@ -58,20 +58,23 @@ const updateProperty= async(id,name,location,sellerId)=>{
     }
 }
 
-const removeProperty= async(id)=>{
+const removeProperty= async(id,canRemove)=>{
     try {
 
         const Exists = await Property.findOne({_id:id});
         if(Exists){
-            const result=await Property.remove({_id:id})
-            if(result){
-                return "Success"
+            if(canRemove==Exists.sellerId){
+                const result=await Property.remove({_id:id})
+                if(result){
+                    return "Success"
+                }
+                else{
+                    return result
+                }
+            }else{
+                return  "You cannot remove this property!"
             }
-            else{
-                return result
-            }
-        }
-        else{
+        }else{
             return "Property Doesnot Exist"
         }
     } catch (error) {
@@ -87,18 +90,17 @@ const contactedProperty= async(property_id,user_id)=>{
         if(property.sellerId!=user._id){
             const message = await property.addContacterId(user_id);
             const message2 = await user.addToContacted(property_id);
-            return {user:user,property:property}
+            return property.sellerId;
         }
         else{
             return "You cannot contact your own property"
         }
 
-
     } catch (error) {
         return error
     }
-
 }
+
 
 
 

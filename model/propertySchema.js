@@ -12,6 +12,22 @@ const propertySchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    area:{
+        type:Number,
+        required:true
+    },
+    price:{
+        type:Number,
+        required:true
+    },
+    type:{
+        type:String,
+        required:true
+    },
+    description:{
+        type:String,
+        reqiured:true
+    },
     sellerId : {
         type: String,
         required: true

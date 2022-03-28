@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 module.exports=()=>{
 
     return async(req,res)=>{
-        const {name,location}=req.body;
+        const {name,location,area,price,type,description}=req.body;
         let token = req.cookies.jwt;
         let sellerId;
         if(!token){
@@ -15,10 +15,10 @@ module.exports=()=>{
             sellerId = (await userService.getUser(token))._id;
         }
 
-        if(!name || !location){
+        if(!name || !location || !area || !description || !price || !type){
             res.json({ error: 'Please fill all the fields' });
         }else{
-            const message = await propertyService.createProperty(name,location,sellerId);
+            const message = await propertyService.createProperty(name,location,area,price,type,description,sellerId);
             if(message=="Exists"){
                 res.status(200).json({ message: "Property Already Exists!" });
             }else if(message=="Success"){

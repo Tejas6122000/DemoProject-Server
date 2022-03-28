@@ -19,7 +19,7 @@ module.exports=()=>{
                     expires: new Date(Date.now()+86,400,000),
                     httpOnly:true
                 });
-                res.status(200).json({token:message});
+                res.status(200).json({token:"Logged In Successfully!"});
             }
         }
     }

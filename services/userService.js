@@ -62,10 +62,25 @@ const getUser = async(token)=>{
     }
 }
 
+const getUserById = async(id)=>{
+    try {
+        const user  = await User.findOne({_id:id})
+        if(user){
+            return user
+        }
+        else{
+            return "Failed"
+        }
+    } catch (error) {
+        return "Failed"
+    }
+}
+
 
 
 module.exports = {
     register,
     login,
-    getUser
+    getUser,
+    getUserById
 }

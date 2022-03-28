@@ -15,11 +15,19 @@ module.exports=()=>{
         }
 
         const message = await propertyService.contactedProperty(id,userId);
-        res.json({message:message});
-
-
-
-
+        if(message=="You cannot contact your own property"){
+            res.json({ error: message });
+        }
+        else{
+            const user=await userService.getUserById(message);
+            console.log(user)
+            if(user=="Failed"){
+                res.json({message:"This Listing Doesnot Exist"});
+            }
+            else{
+                res.json({message:{name:user.name,email:user.email,phone:user.phone}});
+            }
+        }
     }
 
 }
