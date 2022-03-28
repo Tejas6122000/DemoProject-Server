@@ -10,7 +10,7 @@ module.exports=()=>{
         let token = req.cookies.jwt;
         let canEdit;
         if(!id || !name || !location || !area || !description || !price || !type || !sellerId){
-            res.json({ error: 'Please provide all the details' });
+            res.status(417).json({ error: 'Please provide all the details' });
         }else{
             if(!token){
                 return res.status(401).send("Unauthorized Access!");

@@ -7,7 +7,7 @@ const auth = (req, res, next) => {
         const verifyUser = jwt.verify(token, process.env.SECRET_KEY);
         next();
     } catch (error) {
-        res.json({ error: "Unauthorized user" });
+        res.status(401).json({ error: "Unauthorized user" });
     }
 }
 

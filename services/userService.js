@@ -33,7 +33,7 @@ const login = async(email,password)=>{
             const isMatch = await bcrypt.compare(password, userLogin.password);
             if(isMatch){
                 const token = await userLogin.generateAuthToken();
-                return token
+                return {_id:userLogin._id, name:userLogin.name, email:userLogin.email, phone:userLogin.phone, contactedProperty: userLogin.contactedProperty};
 
             }else{
                 return "Wrong Credentials"

@@ -5,7 +5,7 @@ module.exports = () => {
     return async (req, res) => {
         const { name, email, phone, password, cpassword } = req.body;
         if (!name || !email || !phone || !password || !cpassword) {
-            res.json({ error: 'Please fill all the fields' });
+            res.status(417).json({ error: 'Please fill all the fields' });
         } else {
             if (password != cpassword) {
                 res.status(422).json({ error: 'Password does not match' });

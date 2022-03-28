@@ -6,10 +6,10 @@ module.exports = () => {
     return async (req, res) => {
         try {
             res.clearCookie("jwt");
-            res.json({message:"Logout Successful"})
+            res.status(200).json({message:"Logout Successful"})
 
         } catch (error) {
-            res.json({message:"There was some error while logging out"})
+            res.status(205).json({message:"There was some error while logging out"})
         }
     }
 

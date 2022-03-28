@@ -16,7 +16,7 @@ module.exports=()=>{
         }
 
         if(!name || !location || !area || !description || !price || !type){
-            res.json({ error: 'Please fill all the fields' });
+            res.status(417).json({ error: 'Please fill all the fields' });
         }else{
             const message = await propertyService.createProperty(name,location,area,price,type,description,sellerId);
             if(message=="Exists"){

@@ -6,7 +6,7 @@ module.exports=()=>{
     return async(req,res)=>{
         const {email,password}=req.body;
         if(!email || !password){
-            res.json({ error: 'Please fill all the fields' });
+            res.status(417).json({ error: 'Please fill all the fields' });
         }else{
             const message = await userService.login(email,password);
             if(message=="Wrong Credentials"){
@@ -19,7 +19,7 @@ module.exports=()=>{
                     expires: new Date(Date.now()+86,400,000),
                     httpOnly:true
                 });
-                res.status(200).json({token:"Logged In Successfully!"});
+                res.status(200).json({user:message,message:"Logged In Successfully!"});
             }
         }
     }
