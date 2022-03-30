@@ -1,8 +1,8 @@
 require('../db/conn');
 const Property = require('../model/propertySchema');
 const User = require('../model/userSchema');
-
-
+var fs = require('fs');
+var path= require('path');
 
 const allProperties= async()=>{
     try {
@@ -26,10 +26,10 @@ const createProperty= async(name,location,area,price,type,description,sellerId)=
             const property = new Property({name,location,area,price,type,description,sellerId});
             const result = await property.save();
             if (result){
-                return "Success"
+                return result
             }
             else{
-                return result
+                return "Error"
             }
         }
     } catch (error) {
@@ -37,16 +37,22 @@ const createProperty= async(name,location,area,price,type,description,sellerId)=
     }
 }
 
-const updateProperty= async(id,name,location,area,price,type,description,sellerId)=>{
+const updateProperty= async(id,name,location,area,price,type,description)=>{
     try {
         const Exists = await Property.findOne({_id:id});
         if(Exists){
-            const result = await Property.updateOne({_id:id},{$set:{name:name,location:location,area:area,price:price,type:type,description:description,sellerId:sellerId}})
+            const imageArray = Exists.images;
+            const result = await Property.updateOne({_id:id},{$set:{name:name,location:location,area:area,price:price,type:type,description:description}})
             if (result){
-                return "Success";
+                for(let i=0;i<imageArray.length;i++){
+                    var filePath = path.join(__dirname, './../images/',imageArray[i])
+                    await fs.unlinkSync(filePath);
+                }
+                const property = await Property.findOne({_id:id})
+                return property;
             }
             else{
-                return result
+                return "Error"
             }
         }else{
             return "Property Doesnot Exist"
@@ -55,15 +61,31 @@ const updateProperty= async(id,name,location,area,price,type,description,sellerI
         return error
     }
 }
+const getPropertyById= async(id)=>{
+    try{
+    const property = await Property.findOne({_id:id})
+    if(property){
+        return property
+    }else{
+        return "Property Doesnot Exist"
+    }
+    }catch(error){
+        return error
+    }
+}
 
 const removeProperty= async(id,canRemove)=>{
     try {
-
         const Exists = await Property.findOne({_id:id});
         if(Exists){
             if(canRemove==Exists.sellerId){
-                const result=await Property.remove({_id:id})
+                let imageArray=Exists.images;
+                const result=await Property.deleteOne({_id:id})
                 if(result){
+                    for(let i=0;i<imageArray.length;i++){
+                        var filePath = path.join(__dirname, './../images/',imageArray[i])
+                        await fs.unlinkSync(filePath);
+                    }
                     return "Success"
                 }
                 else{
@@ -99,6 +121,21 @@ const contactedProperty= async(property_id,user_id)=>{
     }
 }
 
+const saveImageToDB= async(images,id)=>{
+    try {
+        
+        const result = await Property.updateOne({_id:id},{$set:{images:images}})
+        if (result){
+            return "Success"
+        }
+        else{
+            return result
+        }
+    } catch (error) {
+        return error
+    }
+}
+
 
 
 
@@ -107,5 +144,7 @@ module.exports = {
     createProperty,
     removeProperty,
     updateProperty,
-    contactedProperty
+    contactedProperty,
+    saveImageToDB,
+    getPropertyById
 }

@@ -20,11 +20,12 @@ module.exports=()=>{
             const message = await propertyService.removeProperty(id,canRemove);
             if(message=="Property Doesnot Exist"){
                 res.status(200).json({ message: "Property Doesnot Exist!" });
-            }else if(message=="Success"){
+            }else if(message=="Success"){ 
                 res.status(200).json({ message: "Property Removed Successfully!" });
             }else if(message=="You cannot remove this property!"){
                 res.status(200).json({ message: message });
             }else{
+                console.log(message)
                 res.status(500).json({ message: "Something Went Wrong!" });
             }
         }

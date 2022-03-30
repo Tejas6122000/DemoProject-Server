@@ -31,6 +31,10 @@ const propertySchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    images:{
+        type:Array,
+        required:false
+    },
     contacterIds : [
         {
             contacterId:{
@@ -56,6 +60,7 @@ propertySchema.methods.addContacterId = async function(contacterId){
     }
 
 }
+
 
 const Property = mongoose.model('PROPERTY', propertySchema);
 module.exports = Property;

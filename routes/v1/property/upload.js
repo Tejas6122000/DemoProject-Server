@@ -1,6 +1,9 @@
 const multer = require("multer");
 const path = require('path');
 const fs = require('fs');
+require('./../../../db/conn');
+const Property = require('./../../../model/propertySchema');
+const propertyService = require('../../../services/propertyService');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, path.join(__dirname, './../../../images/'))
@@ -26,8 +29,19 @@ const multi_upload = multer({
     },
 }).array('uploadedImages', 10)
 
+
 module.exports=()=>{
     return async(req,res)=>{
+        const temp=async(img)=>{
+            const id="62444459bdfb21ea2d4a22f2"
+            const message =await propertyService.saveImageToDB(img,id);
+            console.log(message)
+            if(message=="Success"){
+                res.status(200).end('Your files uploaded.');
+            }else{
+               console.log(message)
+            }
+        } 
         multi_upload(req, res, function (err) {
             if (err instanceof multer.MulterError) {
                 res.status(500).send({ error: { message: `Multer uploading error: ${err.message}` } }).end();
@@ -40,8 +54,16 @@ module.exports=()=>{
                 }
                 return;
             }
-            res.status(200).end('Your files uploaded.');
-        })
+            let imageArray=[]
+            req.files.map(function(file) {
+                imageArray.push(file.filename)
+                return file.filename;
+              });
+            console.log(imageArray)
+            temp(imageArray)
+
+        }) 
+         
     }
 }
 

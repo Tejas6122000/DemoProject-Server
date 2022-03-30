@@ -17,15 +17,27 @@ module.exports=()=>{
             }else{
                 canEdit = (await userService.getUser(token))._id;
                 if(canEdit!=sellerId){
-                    return res.status(401).send("You cannot edit this property!");
+                    return res.status(401).send("You cannot Edit this Property!");
                 }else{        
-                    const message = await propertyService.updateProperty(id,name,location,area,price,type,description,sellerId);
+                    const message = await propertyService.updateProperty(id,name,location,area,price,type,description);
                     if(message=="Property Doesnot Exist"){
                         res.status(200).json({ message: "Property Doesnot Exist!" });
-                    }else if(message=="Success"){
-                        res.status(200).json({ message: "Property Updated Successfully!" });
-                    }else{
+                    }else if(message=="Error"){
                         res.status(500).json({ message: "Something Went Wrong!" });
+                    }else{
+                        let imageArray=[]
+                        req.files.map(function(file) {
+                        imageArray.push(file.filename)
+                        return file.filename;
+                        });
+                        const result =await propertyService.saveImageToDB(imageArray,message.id);
+                        if(result=="Success"){
+                            const property=await propertyService.getPropertyById(message.id);
+                            res.status(200).json({message:property});
+                        }else{
+                            console.log(result)
+                            res.status(200).json({message:'Failed to Update Images'});
+                        }        
                     }
                 }
             }
