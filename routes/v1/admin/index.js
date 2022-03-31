@@ -4,7 +4,7 @@ module.exports=()=>{
     routes.get('/allUsers',require('./allUsers')());
     routes.post('/changeRole',require('./changeRole')());
     routes.get('/mostContacted',require('./mostContacted')());
-
+    routes.get('/recentContacted',require('./recentlyCreated')());
 
     return routes
 }

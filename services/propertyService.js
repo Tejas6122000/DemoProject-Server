@@ -18,7 +18,7 @@ const allProperties= async()=>{
     }
 }
 
-const recentProperties= async()=>{
+const recentlyCreatedProperties= async()=>{
     try {
         const all = await Property.find({});
         if(all){
@@ -178,7 +178,7 @@ const saveImageToDB= async(images,id)=>{
 module.exports = {
     allProperties,
     mostContacted,
-    recentProperties,
+    recentlyCreatedProperties,
     createProperty,
     removeProperty,
     updateProperty,
