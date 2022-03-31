@@ -4,6 +4,7 @@ const User = require('../model/userSchema');
 var fs = require('fs');
 var path= require('path');
 
+
 const allProperties= async()=>{
     try {
         const all = await Property.find({});
@@ -16,6 +17,34 @@ const allProperties= async()=>{
         return error
     }
 }
+
+const recentProperties= async()=>{
+    try {
+        const all = await Property.find({});
+        if(all){
+            return all.reverse();
+        }else{
+            return "No Properties Listed"
+        }
+    } catch (error) {
+        return error
+    }
+}
+
+const mostContacted= async()=>{
+    try {
+        const all = await Property.find({}).sort({"contacterIds":-1});
+        if(all){
+            return all
+        }else{
+            return "No Properties Listed"
+        }
+    } catch (error) {
+        return error
+    }
+}
+
+
 
 const createProperty= async(name,location,area,price,type,description,sellerId)=>{
     try {
@@ -148,6 +177,8 @@ const saveImageToDB= async(images,id)=>{
 
 module.exports = {
     allProperties,
+    mostContacted,
+    recentProperties,
     createProperty,
     removeProperty,
     updateProperty,
