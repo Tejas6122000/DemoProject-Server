@@ -5,7 +5,7 @@ const userService = require('../../../services/userService');
 module.exports=()=>{
 
     return async(req,res)=>{ 
-        const {name,location,area,price,type,description}=req.body;
+        const {name,al1,al2,city,zipcode,type,carea,barea,price,description}=req.body;
         let token = req.cookies.jwt;
         let sellerId;
 
@@ -15,11 +15,10 @@ module.exports=()=>{
             sellerId = (await userService.getUser(token))._id;
         }
 
-        if(!name || !location || !area || !description || !price || !type){
-            console.log(name,location,area,description,price,type)
+        if(!name || !al1 || !al2 || !city || !zipcode || !type || !carea || !barea || !price || !description){
             res.status(417).json({ error: 'Please fill all the fields' });
         }else{
-            const message = await propertyService.createProperty(name,location,area,price,type,description,sellerId);
+            const message = await propertyService.createProperty(name,al1,al2,city,zipcode,type,carea,barea,price,description,sellerId);
             if(message=="Exists"){
                 res.status(200).json({ message: "Property Already Exists!" });
             }else if(message=="Error"){

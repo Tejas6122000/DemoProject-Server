@@ -7,20 +7,36 @@ const propertySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    location : {
+    al1 : {
         type: String,
         required: true
     },
-    area:{
+    al2 : {
+        type: String,
+        required: true
+    },
+    city : {
+        type: String,
+        required: true
+    },
+    zipcode : {
+        type: Number,
+        required: true
+    },
+    type:{
+        type:String,
+        required:true
+    },
+    carea:{
+        type:Number,
+        required:true
+    },
+    barea:{
         type:Number,
         required:true
     },
     price:{
         type:Number,
-        required:true
-    },
-    type:{
-        type:String,
         required:true
     },
     description:{
@@ -38,9 +54,7 @@ const propertySchema = new mongoose.Schema({
     createdOn:{
         type: Date,
         default: Date.now
-    }
-        
-    ,
+    },
     contacterIds : [
         {
             contacterId:{

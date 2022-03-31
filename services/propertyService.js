@@ -46,13 +46,13 @@ const mostContacted= async()=>{
 
 
 
-const createProperty= async(name,location,area,price,type,description,sellerId)=>{
+const createProperty= async(name,al1,al2,city,zipcode,type,carea,barea,price,description,sellerId)=>{
     try {
-        const Exists = await Property.findOne({name:name,location:location});
+        const Exists = await Property.findOne({name:name});
         if(Exists){
                 return "Exists"
         }else{
-            const property = new Property({name,location,area,price,type,description,sellerId});
+            const property = new Property({name,al1,al2,city,zipcode,type,carea,barea,price,description,sellerId});
             const result = await property.save();
             if (result){
                 return result
@@ -66,28 +66,32 @@ const createProperty= async(name,location,area,price,type,description,sellerId)=
     }
 }
 
-const updateProperty= async(id,name,location,area,price,type,description)=>{
+const updateProperty= async(id,name,al1,al2,city,zipcode,type,carea,barea,price,description,canEdit)=>{
     try {
         const Exists = await Property.findOne({_id:id});
         if(Exists){
-            const imageArray = Exists.images;
-            const result = await Property.updateOne({_id:id},{$set:{name:name,location:location,area:area,price:price,type:type,description:description}})
-            if (result){
-                for(let i=0;i<imageArray.length;i++){
-                    var filePath = path.join(__dirname, './../images/',imageArray[i])
-                    await fs.unlinkSync(filePath);
+            if(Exists.sellerId==canEdit){
+                const imageArray = Exists.images;
+                const result = await Property.updateOne({_id:id},{$set:{name:name,al1:al1,al2:al2,city:city,zipcode:zipcode,type:type,carea:carea,barea:barea,price:price,type:type,description:description}})
+                if (result){
+                    for(let i=0;i<imageArray.length;i++){
+                        var filePath = path.join(__dirname, './../images/',imageArray[i])
+                        await fs.unlinkSync(filePath);
+                    }
+                    const property = await Property.findOne({_id:id})
+                    return property;
                 }
-                const property = await Property.findOne({_id:id})
-                return property;
-            }
-            else{
-                return "Error"
+                else{
+                    return "Error"
+                }
+            }else{
+                return "You cannot edit this property!"
             }
         }else{
             return "Property Doesnot Exist"
         }
     } catch (error) {
-        return error
+        return "Error"
     }
 }
 const getPropertyById= async(id)=>{
