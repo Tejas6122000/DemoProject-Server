@@ -5,7 +5,7 @@ const propertyService = require('../../../services/propertyService');
 module.exports=()=>{
 
     return async(req,res)=>{
-        const message = await propertyService.mostContacted();
+        const message = await propertyService.recentProperties();
         if(message=="No Properties Listed"){
             res.status(200).json({ message: "No Properties Listed" });
         }else if(message==""){
