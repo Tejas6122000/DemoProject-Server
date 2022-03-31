@@ -86,6 +86,13 @@ const removeProperty= async(id,canRemove)=>{
                         var filePath = path.join(__dirname, './../images/',imageArray[i])
                         await fs.unlinkSync(filePath);
                     }
+
+                    const users = Exists.contacterIds;
+                    for(let i=0;i<users.length;i++){
+                        const user  =  await User.findOne({_id:users[i].contacterId});
+                        const result = await user.removeContacted(Exists._id);
+                    }
+
                     return "Success"
                 }
                 else{

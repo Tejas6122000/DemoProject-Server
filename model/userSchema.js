@@ -19,6 +19,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    role :{
+        type:String,
+        default: 'Normal'
+    }
+    ,
     contactedProperty:[
         {
             property:{
@@ -27,15 +32,15 @@ const userSchema = new mongoose.Schema({
             }
         }
     ]
-    ,
-    tokens:[
-        {
-            token:{
-                type: String,
-                required: true
-            }
-        }
-    ]
+    // ,
+    // tokens:[
+    //     {
+    //         token:{
+    //             type: String,
+    //             required: true
+    //         }
+    //     }
+    // ]
 
 });
 userSchema.pre('save', async function(next){
@@ -72,6 +77,19 @@ userSchema.methods.addToContacted = async function(property_id){
         
     }
 }
+
+userSchema.methods.removeContacted = async function(property_id){
+    try {
+        this.contactedProperty = this.contactedProperty.filter(x=> x.property!=property_id)
+        await this.save();
+        return "Success"
+    } catch (error) {
+        return error
+    }
+}
+
+
+
 
 const User = mongoose.model('USER', userSchema);
 module.exports = User;

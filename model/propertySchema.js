@@ -33,8 +33,14 @@ const propertySchema = new mongoose.Schema({
     },
     images:{
         type:Array,
-        required:false
+        required:true
     },
+    createdOn:{
+        type: Date,
+        default: Date.now
+    }
+        
+    ,
     contacterIds : [
         {
             contacterId:{

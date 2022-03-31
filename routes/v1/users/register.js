@@ -1,3 +1,4 @@
+const { is } = require('express/lib/request');
 const userService = require('../../../services/userService');
 
 module.exports = () => {
@@ -14,12 +15,18 @@ module.exports = () => {
                 if(message=="Exists"){
                     res.status(422).json({error: 'Email already exists'});
 
-                }else if(message =="Success"){
-                    res.status(201).json({message: 'User registered successfully'});
-
-                }else{
+                }else if(message=="Failed"){
                     console.log(message)
                     res.status(500).json({error: message});
+
+                }
+                else{
+                    const user = await userService.getUser(message);
+                    res.cookie('jwt', message,{
+                        expires: new Date(Date.now()+86,400,000),
+                        httpOnly:true
+                    });
+                    res.status(201).json({user:user,message: 'User registered successfully'});
 
                 }
             }
