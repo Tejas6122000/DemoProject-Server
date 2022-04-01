@@ -12,7 +12,7 @@ module.exports=()=>{
         if(!token){
             return res.status(401).json({message:"Unauthorized Access!"});
         }else{
-            canEdit = (await userService.getUser(token))._id;      
+            canEdit = (await userService.getUser(token));      
         }
         if(!name || !al1 || !al2 || !city || !zipcode || !type || !carea || !barea || !price || !description){
             res.status(417).json({message:"Please fill all the fields"});

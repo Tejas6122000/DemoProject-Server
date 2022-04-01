@@ -12,7 +12,7 @@ module.exports=()=>{
         if(!token){
             return res.status(401).json({message:"Unauthorized Access!"});
         }else{
-            canRemove = (await userService.getUser(token))._id;      
+            canRemove = (await userService.getUser(token));      
         }
         if(!id){
             res.status(417).json({message:"Please fill all the fields"});

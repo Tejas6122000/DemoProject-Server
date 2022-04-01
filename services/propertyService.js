@@ -70,7 +70,8 @@ const updateProperty= async(id,name,al1,al2,city,zipcode,type,carea,barea,price,
     try {
         const Exists = await Property.findOne({_id:id});
         if(Exists){
-            if(Exists.sellerId==canEdit || canEdit.role=="Admin"){
+            console.log(canEdit)
+            if(Exists.sellerId==canEdit._id || canEdit.role=="Admin"){
                 const imageArray = Exists.images;
                 const result = await Property.updateOne({_id:id},{$set:{name:name,al1:al1,al2:al2,city:city,zipcode:zipcode,type:type,carea:carea,barea:barea,price:price,type:type,description:description}})
                 if (result){
@@ -111,7 +112,7 @@ const removeProperty= async(id,canRemove)=>{
     try {
         const Exists = await Property.findOne({_id:id});
         if(Exists){
-            if(canRemove==Exists.sellerId || canRemove.role=="Admin"){
+            if(canRemove._id==Exists.sellerId || canRemove.role=="Admin"){
                 let imageArray=Exists.images;
                 const result=await Property.deleteOne({_id:id})
                 if(result){

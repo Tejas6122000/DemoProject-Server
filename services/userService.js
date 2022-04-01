@@ -63,7 +63,7 @@ const getUser = async(token)=>{
         const verifyUser = jwt.verify(token, process.env.SECRET_KEY);
         if(verifyUser){
             const user  =await User.findOne({_id:verifyUser._id})
-            return {_id:user._id,name:user.name,email:user.email,phone:user.phone,contactedProperty:user.contactedProperty};
+            return {_id:user._id,name:user.name,email:user.email,phone:user.phone,role:user.role,contactedProperty:user.contactedProperty};
         }else{
             return "Failed"
         }
@@ -76,7 +76,7 @@ const getUserById = async(id)=>{
     try {
         const user  = await User.findOne({_id:id})
         if(user){
-            return user
+            return {_id:user._id,name:user.name,email:user.email,phone:user.phone,role:user.role,contactedProperty:user.contactedProperty};
         }
         else{
             return "Failed"
