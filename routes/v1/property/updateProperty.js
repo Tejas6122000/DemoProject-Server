@@ -10,20 +10,20 @@ module.exports=()=>{
         let token = req.cookies.jwt;
         let canEdit;
         if(!token){
-            return res.status(401).send();
+            return res.status(401).json({message:"Unauthorized Access!"});
         }else{
             canEdit = (await userService.getUser(token))._id;      
         }
         if(!name || !al1 || !al2 || !city || !zipcode || !type || !carea || !barea || !price || !description){
-            res.status(417).send();
+            res.status(417).json({message:"Please fill all the fields"});
         }else{      
             const message = await propertyService.updateProperty(id,name,al1,al2,city,zipcode,type,carea,barea,price,description,canEdit);
             if(message=="Property Doesnot Exist"){
-                res.status(404).send();
+                res.status(404).json({message:"Property Doesnot Exist"});
             }else if(message=="You cannot edit this property!"){
-                res.status(401).send();
+                res.status(401).json({message:"You cannot edit this property!"});
             }else if(message=="Error"){
-                res.status(500).send();
+                res.status(500).json({message:"Something went wrong"});
             }else{
                 let imageArray=[]
                 req.files.map(function(file) {
@@ -36,7 +36,7 @@ module.exports=()=>{
                     res.status(200).json({message:property});
                 }else{
                     console.log(result)
-                    res.status(500).send();
+                    res.status(500).json({message:"Something went wrong while uploading the images"});
                 }        
             }
         }

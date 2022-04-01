@@ -10,23 +10,23 @@ module.exports=()=>{
         let token = req.cookies.jwt;
         let canRemove;
         if(!token){
-            return res.status(401).send();
+            return res.status(401).json({message:"Unauthorized Access!"});
         }else{
             canRemove = (await userService.getUser(token))._id;      
         }
         if(!id){
-            res.json({ error: 'Please Provide Valid Details of the property' });
+            res.status(417).json({message:"Please fill all the fields"});
         }else{
             const message = await propertyService.removeProperty(id,canRemove);
             if(message=="Property Doesnot Exist"){
-                res.status(404).send();
+                res.status(404).json({message:"Property doesnot exists"});;
             }else if(message=="Success"){ 
-                res.status(200).send();
+                res.status(200).json({message:"Property removed successfully"});
             }else if(message=="You cannot remove this property!"){
-                res.status(401).send()
+                res.status(401).json({message:"You cannot remove this property!"});
             }else{
                 console.log(message)
-                res.status(500).send()
+                res.status(500).json({message:"Something went wrong"});
             }
         }
     }
