@@ -9,7 +9,7 @@ module.exports = () => {
             res.status(200).json({message:"Logout Successful"})
 
         } catch (error) {
-            res.status(205).json({message:"There was some error while logging out"})
+            res.status(500).json({message:"There was some error while logging out"})
         }
     }
 

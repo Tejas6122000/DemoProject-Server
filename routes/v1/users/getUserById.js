@@ -8,7 +8,7 @@ module.exports=()=>{
         const {id} = req.body;
         const message = await userService.getUserById(id);
         if(message=="Failed"){
-            res.status(200).json({ message:"Something Went Wrong" });
+            res.status(500).json({ message:"Something Went Wrong" });
         }else{
             res.status(200).json({ user: message });
         }

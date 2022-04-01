@@ -11,7 +11,7 @@ module.exports = () => {
         if (result != "Failed" || result!="No such account exists") {
             res.status(200).json({ message: "Role changed successfully" });
         } else {
-            res.status(200).json({ message: result })
+            res.status(500).json({ message: result })
         }
     }
 }

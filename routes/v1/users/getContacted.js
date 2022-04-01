@@ -18,11 +18,11 @@ module.exports = () => {
         let prop;
 
         if(propertiesId=="Failed"){
-            res.status(400).json({error:"Something went wrong"})
+            res.status(500).json({error:"Something went wrong"})
             
         }
         else if(propertiesId == "You have contacted no properties"){
-            res.status(400).json({message:propertiesId})
+            res.status(200).json({message:propertiesId})
         }
         else{
             for(let i=0; i<propertiesId.length;i++){

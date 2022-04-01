@@ -16,7 +16,7 @@ module.exports = () => {
         let properties = await userService.getOwnProperty(userId);
 
         if(properties=="Failed"){
-            res.status(400).json({error:"Something went wrong"})
+            res.status(500).json({error:"Something went wrong"})
         }else{
             res.status(200).json({message:properties});
         }

@@ -7,9 +7,7 @@ const changeRole = async(id)=>{
         const Exists = await User.findOne({_id:id})
         if (Exists){
             if(Exists.role!="Admin"){
-                console.log("asd");
                 const result = await User.updateOne({_id:id},{$set:{role:"Admin"}})
-
             }else{
                 const result = await User.updateOne({_id:id},{$set:{role:"Normal"}})
 

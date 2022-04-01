@@ -26,7 +26,7 @@ module.exports = () => {
                         expires: new Date(Date.now()+86,400,000),
                         httpOnly:true
                     });
-                    res.status(201).json({user:user,message: 'User registered successfully'});
+                    res.status(200).json({user:user,message: 'User registered successfully'});
 
                 }
             }

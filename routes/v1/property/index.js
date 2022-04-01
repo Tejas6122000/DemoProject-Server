@@ -20,7 +20,7 @@ const multi_upload = multer({
 
 
 module.exports=()=>{
-    routes.get('/',auth_mw.auth,require('./allProperties')());
+    routes.get('/',require('./allProperties')());
     routes.get('/getPropertyById',auth_mw.auth,require('./getPropertyById')());
     routes.post('/create',multi_upload,auth_mw.auth,require('./createProperty')());
     routes.post('/remove',auth_mw.auth,require('./removeProperty')());
