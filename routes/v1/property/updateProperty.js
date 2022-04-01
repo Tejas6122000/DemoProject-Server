@@ -10,20 +10,20 @@ module.exports=()=>{
         let token = req.cookies.jwt;
         let canEdit;
         if(!token){
-            return res.status(401).send("Unauthorized Access!");
+            return res.status(401).send();
         }else{
             canEdit = (await userService.getUser(token))._id;      
         }
         if(!name || !al1 || !al2 || !city || !zipcode || !type || !carea || !barea || !price || !description){
-            res.status(417).json({ error: 'Please provide all the details' });
+            res.status(417).send();
         }else{      
             const message = await propertyService.updateProperty(id,name,al1,al2,city,zipcode,type,carea,barea,price,description,canEdit);
             if(message=="Property Doesnot Exist"){
-                res.status(200).json({ message: "Property Doesnot Exist!" });
+                res.status(404).send();
             }else if(message=="You cannot edit this property!"){
-                res.status(200).json({ message: message });
+                res.status(401).send();
             }else if(message=="Error"){
-                res.status(500).json({ message: "Something Went Wrong!" });
+                res.status(500).send();
             }else{
                 let imageArray=[]
                 req.files.map(function(file) {
@@ -36,7 +36,7 @@ module.exports=()=>{
                     res.status(200).json({message:property});
                 }else{
                     console.log(result)
-                    res.status(200).json({message:'Failed to Update Images'});
+                    res.status(500).send();
                 }        
             }
         }

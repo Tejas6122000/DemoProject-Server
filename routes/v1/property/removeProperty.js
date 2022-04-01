@@ -10,7 +10,7 @@ module.exports=()=>{
         let token = req.cookies.jwt;
         let canRemove;
         if(!token){
-            return res.status(401).send("Unauthorized Access!");
+            return res.status(401).send();
         }else{
             canRemove = (await userService.getUser(token))._id;      
         }
@@ -19,14 +19,14 @@ module.exports=()=>{
         }else{
             const message = await propertyService.removeProperty(id,canRemove);
             if(message=="Property Doesnot Exist"){
-                res.status(200).json({ message: "Property Doesnot Exist!" });
+                res.status(404).send();
             }else if(message=="Success"){ 
-                res.status(200).json({ message: "Property Removed Successfully!" });
+                res.status(200).send();
             }else if(message=="You cannot remove this property!"){
-                res.status(200).json({ message: message });
+                res.status(401).send()
             }else{
                 console.log(message)
-                res.status(500).json({ message: "Something Went Wrong!" });
+                res.status(500).send()
             }
         }
     }

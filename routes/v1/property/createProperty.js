@@ -20,9 +20,9 @@ module.exports=()=>{
         }else{
             const message = await propertyService.createProperty(name,al1,al2,city,zipcode,type,carea,barea,price,description,sellerId);
             if(message=="Exists"){
-                res.status(200).json({ message: "Property Already Exists!" });
+                res.status(409).send();
             }else if(message=="Error"){
-                res.status(500).json({ message: "Something Went Wrong!" });
+                res.status(500).send();
             }else{
                 let imageArray=[]
                 req.files.map(function(file) {
@@ -34,7 +34,7 @@ module.exports=()=>{
                     res.status(200).json({message:property});
                 }else{
                     console.log(result)
-                    res.status(200).json({message:'Failed to Save Images'});
+                    res.status(500).send();
                 }
   
             }
