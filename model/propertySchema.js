@@ -82,5 +82,16 @@ propertySchema.methods.addContacterId = async function(contacterId){
 }
 
 
+propertySchema.methods.removeContacterId = async function(contacterId){
+    try {
+        this.contacterIds = this.contacterIds.filter(x=> x.contacterId!=contacterId)
+        await this.save()
+        return "Removed"
+    } catch (error) {
+        return error
+    }
+}
+
+
 const Property = mongoose.model('PROPERTY', propertySchema);
 module.exports = Property;

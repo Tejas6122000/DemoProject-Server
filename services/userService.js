@@ -1,6 +1,7 @@
 require('../db/conn');
 const User = require('../model/userSchema');
 const Property = require('../model/propertySchema');
+const propertyService = require("./propertyService");
 bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -63,13 +64,12 @@ const updateUser = async (id, name, email, phone, currentUser) => {
     try {
         const Exists = await User.findOne({ _id: id })
         if (Exists) {
-            console.log(Exists._id,currentUser._id)
             if (id == currentUser._id || currentUser.role == "Admin") {
                 const result = await User.updateOne({ _id: id }, { $set: { name: name, email: email, phone: phone } })
-                if(result){
+                if (result) {
                     const user = await User.findOne({ _id: id })
                     return { _id: user._id, name: user.name, email: user.email, phone: user.phone, role: user.role, contactedProperty: user.contactedProperty };
-                }else{
+                } else {
                     return "Error"
                 }
             } else {
@@ -85,6 +85,38 @@ const updateUser = async (id, name, email, phone, currentUser) => {
     }
 }
 
+const removeUser = async (id, currentUser) => {
+    try {
+
+        const Exists = await User.findOne({ _id: id })
+        if (Exists) {
+            if (id == currentUser._id || currentUser.role == "Admin") {
+                let properties = await Property.find({ sellerId: id })
+                for (let i = 0; i < properties.length; i++) {
+                    const result = await propertyService.removeProperty(properties[i]._id, currentUser)
+                }
+                for (let j = 0; j < Exists.contactedProperty.length; j++) {
+                    let property = await Property.findOne({ _id: Exists.contactedProperty[j].property })
+                    let success = await property.removeContacterId(id)
+                }
+
+                const deleted = await User.deleteOne({ _id: id })
+
+                return "Success"
+
+            } else {
+                return "You cannot delete this profile!"
+            }
+
+        } else {
+            return "User doesn't Exists"
+        }
+
+    } catch (error) {
+        console.log(error)
+        return "Error"
+    }
+}
 
 const getUser = async (token) => {
     try {
@@ -154,6 +186,7 @@ module.exports = {
     register,
     login,
     updateUser,
+    removeUser,
     getUser,
     getUserById,
     getOwnProperty,
