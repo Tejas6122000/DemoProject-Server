@@ -70,7 +70,6 @@ const updateProperty= async(id,name,al1,al2,city,zipcode,type,carea,barea,price,
     try {
         const Exists = await Property.findOne({_id:id});
         if(Exists){
-            console.log(canEdit)
             if(Exists.sellerId==canEdit._id || canEdit.role=="Admin"){
                 const imageArray = Exists.images;
                 const result = await Property.updateOne({_id:id},{$set:{name:name,al1:al1,al2:al2,city:city,zipcode:zipcode,type:type,carea:carea,barea:barea,price:price,type:type,description:description}})
