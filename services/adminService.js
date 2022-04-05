@@ -2,26 +2,20 @@ require('../db/conn');
 const User = require('../model/userSchema');
 const Property = require('../model/propertySchema');
 
-const changeRole = async(id)=>{
+const changeRole = async (id,role) => {
     try {
-        const Exists = await User.findOne({_id:id})
-        if (Exists){
-            if(Exists.role!="Admin"){
-                const result = await User.updateOne({_id:id},{$set:{role:"Admin"}})
-            }else{
-                const result = await User.updateOne({_id:id},{$set:{role:"Normal"}})
-
-            }
-
+        const Exists = await User.findOne({ _id: id })
+        if (Exists) {
+            const result = await User.updateOne({ _id: id }, { $set: { role: role } });
             return "Success"
         }
-        else{
+        else {
             return "No such account exists"
         }
     } catch (error) {
         return "Failed"
     }
-   
+
 
 }
 
